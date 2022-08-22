@@ -22,7 +22,7 @@
           :key="index"
           @click="setActiveTutorial(tutorial, index)"
         >
-          {{ tutorial.title }}
+          {{ tutorial.attributes.title}}
         </li>
       </ul>
 
@@ -34,13 +34,13 @@
       <div v-if="currentTutorial">
         <h4>Tutorial</h4>
         <div>
-          <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+          <label><strong>Title:</strong></label> {{ currentTutorial.attributes.title }}
         </div>
         <div>
-          <label><strong>Description:</strong></label> {{ currentTutorial.description }}
+          <label><strong>Description:</strong></label> {{ currentTutorial.attributes.description }}
         </div>
         <div>
-          <label><strong>Status:</strong></label> {{ currentTutorial.published ? "Published" : "Pending" }}
+          <label><strong>Status:</strong></label> {{ currentTutorial.attributes.published ? "Feito" : "Pendente" }}
         </div>
 
         <router-link :to="'/tutorials/' + currentTutorial.id" class="badge badge-warning">Edit</router-link>
@@ -70,8 +70,8 @@ export default {
     retrieveTutorials() {
       TutorialDataService.getAll()
         .then(response => {
-          this.tutorials = response.data;
-          console.log(response.data);
+          this.tutorials = response.data.data;
+          console.log(response.data.data);
         })
         .catch(e => {
           console.log(e);
