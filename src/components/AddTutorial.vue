@@ -1,37 +1,23 @@
 <template>
-  <div class="submit-form">
-    <div v-if="!submitted">
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          required
-          v-model="tutorial.title"
-          name="title"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="description">Description</label>
-        <input
-          class="form-control"
-          id="description"
-          required
-          v-model="tutorial.description"
-          name="description"
-        />
-      </div>
-
-      <button @click="saveTutorial" class="btn btn-success">Submit</button>
-    </div>
-
-    <div v-else>
-      <h4>You submitted successfully!</h4>
-      <button class="btn btn-success" @click="newTutorial">Add</button>
-    </div>
-  </div>
+  <v-container class="grey lighten-5 mt-10">
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field v-model="tutorial.title" label="Title" required :counter="15"> </v-text-field>
+      <v-text-field v-model="tutorial.description" label="Description" required :counter="30"> </v-text-field>
+      <v-checkbox
+        v-model="checkbox"
+        label="Já foi feito?"
+        required
+      ></v-checkbox>
+      <v-btn
+        :disabled="submitted"
+        color="success"
+        class="mr-4"
+        @click="saveTutorial"
+      >
+        Adicionar Tutorial
+      </v-btn>
+    </v-form>
+  </v-container>
 </template>
 
 <script>
@@ -45,34 +31,46 @@ export default {
         id: null,
         title: "",
         description: "",
-        published: false
+        published: false,
       },
-      submitted: false
+      submitted: false,
+      checkbox: false
     };
   },
   methods: {
     saveTutorial() {
+      this.submitted = true;
+      if(this.tutorial.title.toString().trim().length == 0 ||
+        this.tutorial.description.toString().trim().length == 0){
+        alert("Erro ao adicionar tutorial.");
+        location.reload();
+        return;
+      }
       var data = {
-        title: this.tutorial.title,
-        description: this.tutorial.description
+        data: {
+          title: this.tutorial.title,
+          description: this.tutorial.description,
+          published: this.tutorial.published,
+        },
       };
-
       TutorialDataService.create(data)
-        .then(response => {
+        .then((response) => {
           this.tutorial.id = response.data.id;
-          console.log(response.data);
-          this.submitted = true;
+          alert("Tutorial adicionado com sucesso.");
+          location.reload();
         })
-        .catch(e => {
+        .catch((e) => {
+          alert("Erro ao adicionar tutorial.");
           console.log(e);
+          location.reload();
         });
     },
-    
+
     newTutorial() {
       this.submitted = false;
       this.tutorial = {};
-    }
-  }
+    },
+  },
 };
 </script>
 
