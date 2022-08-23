@@ -1,40 +1,26 @@
 <template>
-  <v-card
-    class="mx-auto"
-    max-width="344"
-    outlined
-  >
-    <v-list-item three-line>
-      <v-list-item-content>
-        <div class="text-overline mb-4">
-          {{tutorial.attributes.title}}
-        </div>
-        <v-list-item-title class="text-h5 mb-1">
-          Headline 5
-        </v-list-item-title>
-        <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
-      </v-list-item-content>
-
-      <v-list-item-avatar
-        tile
-        size="80"
-        color="grey"
-      ></v-list-item-avatar>
-    </v-list-item>
-
-    <v-card-actions>
+  <v-container class="grey lighten-5 mt-10">
+    <v-form ref="form" lazy-validation>
+      <v-text-field v-model="currentTutorial.attributes.title" label="Title" required :counter="20" maxlength="20" > {{currentTutorial.title}} </v-text-field>
+      <v-text-field v-model="currentTutorial.attributes.description" label="Description" required :counter="80" maxlength="80"> </v-text-field>
+      <v-checkbox
+        v-model="currentTutorial.attributes.published"
+        label="Já foi feito?"
+        required
+      ></v-checkbox>
       <v-btn
-        outlined
-        rounded
-        text
+        color="success"
+        class="mr-4"
+        @click="updateTutorial"
       >
-        Button
+        Confirmar Edição
       </v-btn>
-    </v-card-actions>
-  </v-card>
+    </v-form>
+  </v-container>
 </template>
 
 <script>
+import router from "../router";
 import TutorialDataService from "../services/TutorialDataService";
 
 export default {
@@ -42,71 +28,40 @@ export default {
   data() {
     return {
       currentTutorial: null,
-      message: ''
     };
   },
   methods: {
     getTutorial(id) {
       TutorialDataService.get(id)
         .then(response => {
-          this.currentTutorial = response.data;
-          console.log(response.data);
+          this.currentTutorial = response.data.data;
+          console.log(this.currentTutorial);
         })
         .catch(e => {
           console.log(e);
         });
     },
-
-    updatePublished(status) {
+    updateTutorial() {
       var data = {
-        id: this.currentTutorial.id,
-        title: this.currentTutorial.title,
-        description: this.currentTutorial.description,
-        published: status
-      };
-
+        data: {
+          title: this.currentTutorial.attributes.title,
+          description: this.currentTutorial.attributes.description,
+          published: this.currentTutorial.attributes.published
+        }
+      }
       TutorialDataService.update(this.currentTutorial.id, data)
         .then(response => {
-          this.currentTutorial.published = status;
           console.log(response.data);
+          alert("Tutorial editado com sucesso.");
+          router.back();
         })
         .catch(e => {
           console.log(e);
         });
     },
-
-    updateTutorial() {
-      TutorialDataService.update(this.currentTutorial.id, this.currentTutorial)
-        .then(response => {
-          console.log(response.data);
-          this.message = 'The tutorial was updated successfully!';
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
-    deleteTutorial() {
-      TutorialDataService.delete(this.currentTutorial.id)
-        .then(response => {
-          console.log(response.data);
-          this.$router.push({ name: "tutorials" });
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
   },
   mounted() {
-    this.message = '';
     this.getTutorial(this.$route.params.id);
   }
 };
 </script>
-
-<style>
-.edit-form {
-  max-width: 300px;
-  margin: auto;
-}
-</style>

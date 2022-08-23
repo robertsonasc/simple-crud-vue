@@ -1,8 +1,8 @@
 <template>
   <v-container class="grey lighten-5 mt-10">
-    <v-form ref="form" v-model="valid" lazy-validation>
+    <v-form ref="form" lazy-validation>
       <v-text-field v-model="tutorial.title" label="Title" required :counter="20" maxlength="20" > </v-text-field>
-      <v-text-field v-model="tutorial.description" label="Description" required :counter="60" maxlength="60"> </v-text-field>
+      <v-text-field v-model="tutorial.description" label="Description" required :counter="80" maxlength="80"> </v-text-field>
       <v-checkbox
         v-model="checkbox"
         label="Já foi feito?"

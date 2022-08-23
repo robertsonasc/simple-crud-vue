@@ -2,8 +2,8 @@
   <div id="app">
     <v-app id="inspire">
       <v-container class="grey lighten-5 mt-10">
-        <v-row >
-          <v-col >
+        <v-row>
+          <v-col>
             <v-card class="justify-left" max-width="344" outlined>
               <v-list desabled>
                 <v-subheader>Tutorials</v-subheader>
@@ -11,7 +11,7 @@
                   <v-list-item
                     v-for="(tutorial, i) in tutorials"
                     :key="i"
-                    @click="setActiveTutorial(tutorial, i)"
+                    @click="setActiveTutorial(tutorial)"
                   >
                     <v-list-item-content>
                       <v-list-item-title
@@ -22,10 +22,9 @@
                 </v-list-item-group>
               </v-list>
             </v-card>
-            
           </v-col>
           <v-col>
-            <v-card class="mx-auto" max-width="344" elevation="2" shaped>
+            <v-card class="mx-auto" max-width="500" elevation="2" shaped>
               <div v-if="currentTutorial">
                 <v-list-item three-line>
                   <v-list-item-content>
@@ -34,20 +33,27 @@
                       {{ currentTutorial.attributes.title }}
                     </v-list-item-title>
                     <v-list-item-subtitle class="mb-2">
-                      {{currentTutorial.attributes.description}} 
+                      {{ currentTutorial.attributes.description }}
                     </v-list-item-subtitle>
                     <div class="text--primary">
-                      Status: {{currentTutorial.attributes.published? "Feito": "Pendente"}}
+                      Status:
+                      {{
+                        currentTutorial.attributes.published
+                          ? "Feito"
+                          : "Pendente"
+                      }}
                     </div>
                   </v-list-item-content>
                 </v-list-item>
+                <v-card-actions>
+                  <v-btn class="ms-2" color="warning" rounded :to="'/tutorials/' + currentIndex"> Edit </v-btn>
+                </v-card-actions>
               </div>
               <div v-else>
                 <p class="ms-10">Please click on a Tutorial...</p>
               </div>
             </v-card>
           </v-col>
-
         </v-row>
       </v-container>
     </v-app>
@@ -82,9 +88,9 @@ export default {
       this.currentTutorial = null;
       this.currentIndex = -1;
     },
-    setActiveTutorial(tutorial, index) {
+    setActiveTutorial(tutorial) {
       this.currentTutorial = tutorial;
-      this.currentIndex = index;
+      this.currentIndex = tutorial.id;
     },
     removeAllTutorials() {
       TutorialDataService.deleteAll()
