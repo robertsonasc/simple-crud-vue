@@ -1,15 +1,14 @@
 <template>
   <v-container class="grey lighten-5 mt-10">
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field v-model="tutorial.title" label="Title" required :counter="15"> </v-text-field>
-      <v-text-field v-model="tutorial.description" label="Description" required :counter="30"> </v-text-field>
+      <v-text-field v-model="tutorial.title" label="Title" required :counter="20" maxlength="20" > </v-text-field>
+      <v-text-field v-model="tutorial.description" label="Description" required :counter="60" maxlength="60"> </v-text-field>
       <v-checkbox
         v-model="checkbox"
         label="Já foi feito?"
         required
       ></v-checkbox>
       <v-btn
-        :disabled="submitted"
         color="success"
         class="mr-4"
         @click="saveTutorial"
@@ -33,17 +32,15 @@ export default {
         description: "",
         published: false,
       },
-      submitted: false,
       checkbox: false
     };
   },
   methods: {
     saveTutorial() {
-      this.submitted = true;
       if(this.tutorial.title.toString().trim().length == 0 ||
         this.tutorial.description.toString().trim().length == 0){
         alert("Erro ao adicionar tutorial.");
-        location.reload();
+        this.newTutorial();
         return;
       }
       var data = {
@@ -57,18 +54,20 @@ export default {
         .then((response) => {
           this.tutorial.id = response.data.id;
           alert("Tutorial adicionado com sucesso.");
-          location.reload();
+          this.newTutorial();
         })
         .catch((e) => {
           alert("Erro ao adicionar tutorial.");
           console.log(e);
-          location.reload();
+          this.newTutorial();
         });
     },
 
     newTutorial() {
-      this.submitted = false;
-      this.tutorial = {};
+      this.tutorial.title = "";
+      this.tutorial.description = "";
+      this.tutorial.published = false;
+      this.checkbox = false;
     },
   },
 };

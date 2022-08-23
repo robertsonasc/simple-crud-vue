@@ -43,8 +43,7 @@
                 </v-list-item>
               </div>
               <div v-else>
-                <br />
-                <p>Please click on a Tutorial...</p>
+                <p class="ms-10">Please click on a Tutorial...</p>
               </div>
             </v-card>
           </v-col>
