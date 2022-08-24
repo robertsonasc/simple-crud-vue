@@ -3,7 +3,7 @@
     <v-app id="inspire">
       <v-container class="grey lighten-5 mt-10">
         <v-row>
-          <v-col>
+          <v-col md="4">
             <v-card class="justify-left" max-width="344" outlined>
               <v-list desabled>
                 <v-subheader>Tutorials</v-subheader>
@@ -23,8 +23,8 @@
               </v-list>
             </v-card>
           </v-col>
-          <v-col>
-            <v-card class="mx-auto" max-width="500" elevation="2" shaped>
+          <v-col md="4">
+            <v-card max-width="500" elevation="2" shaped>
               <div v-if="currentTutorial">
                 <v-list-item three-line>
                   <v-list-item-content>
@@ -46,7 +46,22 @@
                   </v-list-item-content>
                 </v-list-item>
                 <v-card-actions>
-                  <v-btn class="ms-2" color="warning" rounded :to="'/tutorials/' + currentIndex"> Edit </v-btn>
+                  <v-btn
+                    class="ms-2"
+                    color="warning"
+                    rounded
+                    :to="'/tutorials/' + currentIndex"
+                  >
+                    Edit
+                  </v-btn>
+                  <v-btn
+                    class="ms-2"
+                    color="error"
+                    rounded
+                    @click="dialog = true"
+                  >
+                    Delete
+                  </v-btn>
                 </v-card-actions>
               </div>
               <div v-else>
@@ -56,6 +71,27 @@
           </v-col>
         </v-row>
       </v-container>
+      <v-row justify="center">
+        <v-dialog v-model="dialog" persistent max-width="290">
+          <v-card>
+            <v-card-title class="text-h5">
+              Are you sure you want to delete this tutorial?
+            </v-card-title>
+            <v-card-text
+              >After deleting, the tutorial will no longer be available.</v-card-text
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="dialog = false">
+                Disagree
+              </v-btn>
+              <v-btn color="green darken-1" text @click="removeTutorial(currentIndex)">
+                Agree
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
     </v-app>
   </div>
 </template>
@@ -70,6 +106,7 @@ export default {
       currentTutorial: null,
       currentIndex: -1,
       title: "",
+      dialog: false,
     };
   },
   methods: {
@@ -102,7 +139,25 @@ export default {
           console.log(e);
         });
     },
-
+    removeTutorial(id) {
+      this.dialog = false;
+      TutorialDataService.delete(id)
+        .then((response) => {
+          alert("Tutorial removido com sucesso.");
+          console.log(response);
+          for (let i = 0; i < this.tutorials.length; i++) {
+            if (id === this.tutorials[i].id) {
+              this.tutorials.splice(i, 1);
+            }
+          }
+          this.currentTutorial = null;
+          this.currentIndex = -1;
+        })
+        .catch((e) => {
+          alert("Erro ao remover tutorial.");
+          console.log(e);
+        });
+    },
     searchTitle() {
       TutorialDataService.findByTitle(this.title)
         .then((response) => {
