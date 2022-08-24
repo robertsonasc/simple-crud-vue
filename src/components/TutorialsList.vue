@@ -120,24 +120,9 @@ export default {
           console.log(e);
         });
     },
-    refreshList() {
-      this.retrieveTutorials();
-      this.currentTutorial = null;
-      this.currentIndex = -1;
-    },
     setActiveTutorial(tutorial) {
       this.currentTutorial = tutorial;
       this.currentIndex = tutorial.id;
-    },
-    removeAllTutorials() {
-      TutorialDataService.deleteAll()
-        .then((response) => {
-          console.log(response.data);
-          this.refreshList();
-        })
-        .catch((e) => {
-          console.log(e);
-        });
     },
     removeTutorial(id) {
       this.dialog = false;
@@ -158,22 +143,9 @@ export default {
           console.log(e);
         });
     },
-    searchTitle() {
-      TutorialDataService.findByTitle(this.title)
-        .then((response) => {
-          this.tutorials = response.data;
-          console.log(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
   },
   mounted() {
     this.retrieveTutorials();
   },
 };
 </script>
-
-<style scoped>
-</style>
