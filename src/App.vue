@@ -1,21 +1,26 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-        <v-app-bar absolute dense>
-          <v-toolbar-title>CRUD Tutorials</v-toolbar-title>
+      <v-app-bar absolute>
+        <v-toolbar-title>CRUD Tutorials</v-toolbar-title>
 
-          <v-btn class="ms-2" to="/tutorials">
-            <v-toolbar-item>List Tutorials</v-toolbar-item>
-          </v-btn>
+        <v-toolbar-items class="ms-5">
+          <v-btn text to="/tutorials"> List Tutorials </v-btn>
+          <v-btn text to="/add"> Add New Tutorial </v-btn>
+        </v-toolbar-items>
+      </v-app-bar>
 
-          <v-btn to="/add">
-            <v-toolbar-item>Add New Tutorial</v-toolbar-item>
-          </v-btn>
-        </v-app-bar>
-     
       <div class="container mt-3">
         <router-view />
       </div>
+      <v-snackbar v-model="$store.state.snackBar" multi-line :color=$store.state.colorSnackBar>
+        {{$store.state.text}}
+        <template v-slot:action="{ attrs }">
+          <v-btn color="white" text v-bind="attrs" @click="$store.commit('snackBarFalse')">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-app>
   </div>
 </template>

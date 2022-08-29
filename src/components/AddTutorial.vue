@@ -1,18 +1,28 @@
 <template>
   <v-container class="grey lighten-5 mt-10">
     <v-form ref="form" lazy-validation>
-      <v-text-field v-model="tutorial.title" label="Title" required :counter="20" maxlength="20" > </v-text-field>
-      <v-text-field v-model="tutorial.description" label="Description" required :counter="80" maxlength="80"> </v-text-field>
+      <v-text-field
+        v-model="tutorial.title"
+        label="Title"
+        required
+        :counter="20"
+        maxlength="20"
+      >
+      </v-text-field>
+      <v-text-field
+        v-model="tutorial.description"
+        label="Description"
+        required
+        :counter="80"
+        maxlength="80"
+      >
+      </v-text-field>
       <v-checkbox
         v-model="checkbox"
         label="Já foi feito?"
         required
       ></v-checkbox>
-      <v-btn
-        color="success"
-        class="mr-4"
-        @click="saveTutorial"
-      >
+      <v-btn color="success" class="mr-4" @click="saveTutorial">
         Adicionar Tutorial
       </v-btn>
     </v-form>
@@ -32,15 +42,17 @@ export default {
         description: "",
         published: false,
       },
-      checkbox: false
+      checkbox: false,
     };
   },
   methods: {
     saveTutorial() {
-      if(this.tutorial.title.toString().trim().length == 0 ||
-        this.tutorial.description.toString().trim().length == 0){
-        alert("Erro ao adicionar tutorial.");
-        this.newTutorial();
+      if (
+        this.tutorial.title.toString().trim().length == 0 ||
+        this.tutorial.description.toString().trim().length == 0
+      ) {
+        this.$store.commit("preenchaTodosTextSnack");
+        this.$store.commit("snackBarTrue");
         return;
       }
       var data = {
@@ -53,11 +65,13 @@ export default {
       TutorialDataService.create(data)
         .then((response) => {
           this.tutorial.id = response.data.id;
-          alert("Tutorial adicionado com sucesso.");
+          this.$store.commit("adicaoTextSnack");
+          this.$store.commit("snackBarTrue");
           this.newTutorial();
         })
         .catch((e) => {
-          alert("Erro ao adicionar tutorial.");
+          this.$store.commit("adicaoErroTextSnack");
+          this.$store.commit("snackBarTrue");
           console.log(e);
           this.newTutorial();
         });

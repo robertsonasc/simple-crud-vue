@@ -107,6 +107,7 @@ export default {
       currentIndex: -1,
       title: "",
       dialog: false,
+      selectedItem: null,
     };
   },
   methods: {
@@ -128,7 +129,9 @@ export default {
       this.dialog = false;
       TutorialDataService.delete(id)
         .then((response) => {
-          alert("Tutorial removido com sucesso.");
+          this.$store.commit('remocaoTextSnack')
+          this.$store.commit('snackBarTrue')
+          this.selectedItem = null
           console.log(response);
           for (let i = 0; i < this.tutorials.length; i++) {
             if (id === this.tutorials[i].id) {
@@ -139,7 +142,8 @@ export default {
           this.currentIndex = -1;
         })
         .catch((e) => {
-          alert("Erro ao remover tutorial.");
+          this.$store.commit('remocaoErroTextSnack')
+          this.$store.commit('snackBarTrue')
           console.log(e);
         });
     },
