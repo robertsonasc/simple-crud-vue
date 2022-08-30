@@ -13,10 +13,20 @@
       <div class="container mt-3">
         <router-view />
       </div>
-      <v-snackbar v-model="$store.state.snackBar" multi-line :color=$store.state.colorSnackBar>
-        {{$store.state.text}}
+      <v-snackbar
+        v-model="$store.state.snackBar"
+        multi-line
+        :color="$store.state.colorSnackBar"
+        :timeout="$store.state.timeout"
+      >
+        {{ $store.state.text }}
         <template v-slot:action="{ attrs }">
-          <v-btn color="white" text v-bind="attrs" @click="$store.commit('snackBarFalse')">
+          <v-btn
+            color="white"
+            text
+            v-bind="attrs"
+            @click="$store.commit('snackBarFalse')"
+          >
             Close
           </v-btn>
         </template>

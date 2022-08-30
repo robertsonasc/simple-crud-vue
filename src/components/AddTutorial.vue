@@ -5,8 +5,8 @@
         v-model="tutorial.title"
         label="Title"
         required
-        :counter="20"
-        maxlength="20"
+        :counter="50"
+        maxlength="50"
       >
       </v-text-field>
       <v-text-field

@@ -115,6 +115,9 @@ export default {
       TutorialDataService.getAll()
         .then((response) => {
           this.tutorials = response.data.data;
+          this.tutorials.sort(function(a, b){
+            return (a.id - b.id)
+          })
           console.log(response.data.data);
         })
         .catch((e) => {
