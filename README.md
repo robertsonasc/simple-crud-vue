@@ -23,7 +23,7 @@ The `fron-tend` is made with Vue.js. And the `back-end` with Strapi/Node.js.
 `npm run serve`<br>
 
 **Step 5 - Editing roles in Strapi:** Change the following settings in Strapi Admin Panel:
-![](https://github.com/robertsonasc/simple-crud-vue/blob/master/screenshots/Roles.png?raw=true "Editing roles")
+![](https://github.com/robertsonasc/simple-crud-vue/blob/master/screenshots/Roles.jpg?raw=true "Editing roles")
 ***
 
 ### Screenshots
