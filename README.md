@@ -26,6 +26,8 @@ The `fron-tend` is made with Vue.js. And the `back-end` with Strapi/Node.js.
 ![](https://github.com/robertsonasc/simple-crud-vue/blob/master/screenshots/Roles.jpg?raw=true "Editing roles")
 ***
 
+**Done! The Application should be running correctly.**
+
 ### Screenshots
 ![](https://github.com/robertsonasc/simple-crud-vue/blob/master/screenshots/Home.png?raw=true "Home")
 ***
